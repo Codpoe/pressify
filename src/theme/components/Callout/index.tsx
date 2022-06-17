@@ -27,8 +27,9 @@ export function Callout({
 }: CalloutProps) {
   return (
     <div
-      className={`callout-${type} relative my-5 py-4 pl-11 pr-5 rounded-lg bg-c-bg-1 border font-medium`}
+      className={`callout callout-${type} relative my-5 py-4 pl-11 pr-5 rounded-lg border font-medium`}
     >
+      <div className="callout-bg absolute top-0 bottom-0 left-0 right-0 rounded-lg"></div>
       <span className="callout-icon absolute top-5 left-4 flex items-center h-[1.2em] text-[15px]">
         {typeof icon === 'string'
           ? icon
