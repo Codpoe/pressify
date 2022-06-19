@@ -142,7 +142,7 @@
     "upath": "^2.0.1",
     "valtio": "^1.6.1",
     "vite": "^2.9.9",
-    "vite-plugin-conventional-entries": "^0.1.10-beta.3",
-    "vite-plugin-conventional-routes": "^0.1.12-beta.6"
+    "vite-plugin-conventional-entries": "^0.1.10-beta.4",
+    "vite-plugin-conventional-routes": "^0.1.12-beta.8"
   }
 }

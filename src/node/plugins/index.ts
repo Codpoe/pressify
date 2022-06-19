@@ -6,21 +6,16 @@ import {
   PluginOption,
   UserConfig as ViteConfig,
   searchForWorkspaceRoot,
-  ResolvedConfig,
 } from 'vite';
 import react from '@vitejs/plugin-react';
 import icons from 'unplugin-icons/vite';
 import { conventionalEntries as entries } from 'vite-plugin-conventional-entries';
-import {
-  conventionalRoutes as routes,
-  Page,
-} from 'vite-plugin-conventional-routes';
+import { conventionalRoutes as routes } from 'vite-plugin-conventional-routes';
 import {
   DEFAULT_THEME_FILE,
   DIST_APP_DIR,
   DIST_CLIENT_DIR,
   DIST_THEME_DIR,
-  PAGES_DATA_MODULE_ID,
   THEME_MODULE_ID,
 } from '../common/constants.js';
 import { getGitRoot } from '../common/utils.js';
@@ -48,8 +43,6 @@ export function createPressifyPlugin(
   siteConfig: SiteConfig,
   ssr: boolean
 ): (PluginOption | PluginOption[])[] {
-  let viteConfig: ResolvedConfig;
-
   const mainPlugin: Plugin = {
     name: 'pressify:main',
 
@@ -179,53 +172,9 @@ export function createPressifyPlugin(
         : viteConfig;
     },
 
-    configResolved(config) {
-      viteConfig = config;
-    },
-
     configureServer(server) {
       if (siteConfig.configPath) {
         server.watcher.add(siteConfig.configPath);
-      }
-    },
-
-    resolveId(source) {
-      if (source === PAGES_DATA_MODULE_ID) {
-        return PAGES_DATA_MODULE_ID;
-      }
-    },
-
-    async load(id) {
-      if (id === PAGES_DATA_MODULE_ID) {
-        const routesPlugin = viteConfig.plugins.find(
-          p => p.name === 'vite-plugin-conventional-routes'
-        );
-        const pages: Page[] = routesPlugin?.api?.getPages?.() || [];
-
-        const pagesData = pages.reduce<Record<string, Page>>((acc, cur) => {
-          // skip layout file and 404 file
-          if (cur.isLayout || cur.is404) {
-            return acc;
-          }
-
-          // get relative path from git root. It will be used to create git edit link
-          // e.g. https://github.com/codpoe/pressify/edit/master/package.json
-          const gitRoot = getGitRoot(cur.filePath);
-          const filePathFromGitRoot = gitRoot
-            ? path.relative(gitRoot, cur.filePath)
-            : cur.filePath;
-
-          acc[cur.routePath] = {
-            ...cur,
-            filePath: filePathFromGitRoot,
-          };
-          return acc;
-        }, {});
-
-        return `
-      export const pagesData = ${JSON.stringify(pagesData, null, 2)};
-      export default pagesData;
-      `;
       }
     },
 
@@ -251,7 +200,23 @@ export function createPressifyPlugin(
     react(siteConfig.react),
     icons(siteConfig.icons),
     entries({ src: DIST_APP_DIR }),
-    routes({ pages: siteConfig.pages, ignore: siteConfig.ignore }),
+    routes({
+      pages: siteConfig.pages,
+      ignore: siteConfig.ignore,
+      onCreatePageData(pageData) {
+        // get relative path from git root. It will be used to create git edit link
+        // e.g. https://github.com/codpoe/pressify/edit/master/package.json
+        const gitRoot = getGitRoot(pageData.filePath);
+        const filePathFromGitRoot = gitRoot
+          ? path.relative(gitRoot, pageData.filePath)
+          : pageData.filePath;
+
+        return {
+          ...pageData,
+          filePath: filePathFromGitRoot,
+        };
+      },
+    }),
     // internal plugins
     mainPlugin,
     createMdxPlugin(siteConfig.mdx),

@@ -35,6 +35,7 @@ export async function waitForPageReady(appState: AppState, pagePath: string) {
 
     // update app state
     appState.pagePath = pagePath;
+    appState.pageData = appState.pagesData[pagePath];
     appState.pageModule = ref(pageModule);
     appState.pageError = null;
   } catch (err) {

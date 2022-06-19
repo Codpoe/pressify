@@ -1,6 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { useNavigate, useLocation } from 'pressify/client';
-import { useThemeContext } from '../../context';
+import { useNavigate, useLocation, useAppState } from 'pressify/client';
 import { useElementSize } from '../../hooks/useElementSize';
 import { useKeyDown } from '../../hooks/useKeyDown';
 import { Mdx } from '../Mdx';
@@ -46,8 +45,8 @@ export const SlideLayout: React.FC = () => {
   const pageRef = useRef(page);
   pageRef.current = page;
 
-  const { currentPageData } = useThemeContext();
-  const { slideCount } = currentPageData?.meta || {};
+  const { pageData } = useAppState();
+  const { slideCount } = pageData?.meta || {};
 
   // TODO: slide modules
   const slideModule = {} as any;

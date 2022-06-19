@@ -52,9 +52,8 @@ function createEditLink(
 }
 
 export const UpdateInfo: React.FC = () => {
-  const { pagePath } = useAppState();
+  const { pagePath, pageData } = useAppState();
   const {
-    currentPageData,
     repo,
     docsRepo = repo,
     docsBranch = 'master',
@@ -69,13 +68,13 @@ export const UpdateInfo: React.FC = () => {
     typeof lastUpdated === 'string' ? lastUpdated : 'Last updated';
 
   const finalEditLink =
-    editLink && docsRepo && currentPageData?.filePath
-      ? createEditLink(docsRepo, docsBranch, docsDir, currentPageData.filePath)
+    editLink && docsRepo && pageData?.filePath
+      ? createEditLink(docsRepo, docsBranch, docsDir, pageData.filePath)
       : '';
 
   const finalLastUpdated =
-    lastUpdated && currentPageData?.meta.updatedTime
-      ? new Date(currentPageData.meta.updatedTime).toLocaleString()
+    lastUpdated && pageData?.meta?.updatedTime
+      ? new Date(pageData.meta.updatedTime).toLocaleString()
       : '';
 
   if (!pagePath || (!finalEditLink && !finalLastUpdated)) {

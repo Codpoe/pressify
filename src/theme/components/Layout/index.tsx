@@ -1,12 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  useThemeConfig,
-  usePagesData,
-  useAppState,
-  Helmet,
-  matchPath,
-} from 'pressify/client';
-import { ThemeContext, useThemeContext } from '../../context';
+import { useThemeConfig, useAppState, Helmet } from 'pressify/client';
+import { ThemeContext } from '../../context';
 import { ThemeConfig, NavItem } from '../../types';
 import { IN_BROWSER, THEME_MODE_STORAGE_KEY } from '../../constants';
 import { getLocales, getThemeMode, mergeThemeConfig } from '../../utils';
@@ -27,20 +21,19 @@ if (IN_BROWSER) {
 }
 
 const InternalLayout: React.FC = () => {
-  const { currentPageData } = useThemeContext();
+  const { pageData } = useAppState();
 
   return (
     <>
       <Header />
-      {currentPageData?.meta.home ? <HomeLayout /> : <DocLayout />}
+      {pageData?.meta?.home ? <HomeLayout /> : <DocLayout />}
     </>
   );
 };
 
 export const Layout: React.FC = () => {
   const themeConfig = useThemeConfig<ThemeConfig>();
-  const pagesData = usePagesData();
-  const { pagePath } = useAppState();
+  const { pagePath, pagesData, pageData } = useAppState();
 
   const [themeMode, setThemeMode] = useState(() => getThemeMode());
 
@@ -56,15 +49,6 @@ export const Layout: React.FC = () => {
     () => mergeThemeConfig(themeConfig, pagePath),
     [themeConfig, pagePath]
   );
-
-  const currentPageData = useMemo(() => {
-    const found =
-      pagePath &&
-      Object.keys(pagesData)
-        .sort((a, b) => b.length - a.length)
-        .find(item => matchPath(item, pagePath));
-    return found ? pagesData[found] : undefined;
-  }, [pagesData, pagePath]);
 
   const locales = useMemo(() => getLocales(themeConfig), [themeConfig]);
 
@@ -124,7 +108,7 @@ export const Layout: React.FC = () => {
         defaultTitle={finalThemeConfig.title}
       >
         <html lang={currentLocale?.locale} className={htmlClassName} />
-        <title>{currentPageData?.meta?.title}</title>
+        <title>{pageData?.meta?.title}</title>
         {finalThemeConfig.description && (
           <meta name="description" content={finalThemeConfig.description} />
         )}
@@ -137,8 +121,6 @@ export const Layout: React.FC = () => {
           ...finalThemeConfig,
           textNav,
           iconNav,
-          pagesData,
-          currentPageData,
           locales,
           currentLocale,
           homePath,

@@ -1,16 +1,3 @@
-declare module '/@pressify/pages-data*' {
-  export interface PageData {
-    basePath: string;
-    routePath: string;
-    filePath: string;
-    meta: Record<string, any>;
-  }
-
-  const pagesData: Record<string, PageData>;
-
-  export default pagesData;
-}
-
 declare module '/@pressify/theme*' {
   import { ComponentType } from 'react';
   import { Components } from '@mdx-js/react/lib';

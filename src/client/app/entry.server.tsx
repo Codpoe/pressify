@@ -24,4 +24,4 @@ export async function render(
   );
 }
 
-export { default as pagesData } from '/@pressify/pages-data';
+export { default as pagesData } from 'virtual:conventional-pages-data';

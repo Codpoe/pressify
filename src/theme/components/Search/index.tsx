@@ -113,13 +113,15 @@ export const Search: React.FC<{ iconOnly?: boolean }> = ({ iconOnly }) => {
             <IconSearch className="text-xl text-c-text-0 group-hover:text-c-brand transition-colors" />
           </div>
         ) : (
-          <div className="flex items-center space-x-2 text-c-text-0 opacity-60 hover:opacity-100 transition-opacity">
-            <IconSearch className="text-base" />
-            <span className="text-[13px]">Search</span>
-            <div className="flex items-center h-4.5 px-0.5 border border-current rounded text-xs opacity-50 group-hover:opacity-100 group-hover:text-c-brand transition-all">
+          <>
+            <div className="flex items-center space-x-1.5 mr-1.5 text-c-text-2 group-hover:text-c-text-0 transition-colors">
+              <IconSearch className="text-[15px]" />
+              <span className="text-[13px]">Search</span>
+            </div>
+            <div className="flex items-center h-4.5 px-0.5 border border-current rounded text-xs text-c-text-3 group-hover:text-c-brand transition-colors">
               <IconCommand />K
             </div>
-          </div>
+          </>
         )}
       </button>
 

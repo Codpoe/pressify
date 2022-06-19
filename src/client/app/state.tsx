@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 import { proxy, ref, snapshot, subscribe, useSnapshot } from 'valtio';
 import _theme from '/@pressify/theme';
 import _routes from 'virtual:conventional-routes';
+import pagesData from 'virtual:conventional-pages-data';
 import { AppState } from './types';
 
 const theme = {
@@ -25,6 +26,7 @@ export function createAppState() {
   const appState = proxy<AppState>({
     theme: ref(theme),
     routes: ref(routes),
+    pagesData: ref(pagesData),
     pageLoading: false,
     pageError: null,
   });

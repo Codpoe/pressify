@@ -1,8 +1,7 @@
 import React from 'react';
-import { Page, Link } from 'pressify/client';
+import { Page, Link, useAppState } from 'pressify/client';
 import { Mdx } from '../Mdx';
 import { Footer } from '../Footer';
-import { useThemeContext } from '../../context';
 import { Button } from '../Button';
 
 interface HomePageMeta {
@@ -15,9 +14,9 @@ interface HomePageMeta {
 }
 
 export const HomeLayout: React.FC = () => {
-  const { currentPageData } = useThemeContext();
+  const { pageData } = useAppState();
   const { heroImage, heroText, tagline, actions, features, footer } =
-    (currentPageData?.meta || {}) as HomePageMeta;
+    (pageData?.meta || {}) as HomePageMeta;
 
   return (
     <div className="max-w-screen-lg px-6 md:px-8 mx-auto h-full flex flex-col">

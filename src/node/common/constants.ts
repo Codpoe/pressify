@@ -15,9 +15,6 @@ export const SSR_ENTRY_FILE = path.join(DIST_CLIENT_DIR, 'app/entry.server.js');
 // routes
 export const ROUTES_MODULE_ID = '/@pressify/routes';
 
-// pages data
-export const PAGES_DATA_MODULE_ID = '/@pressify/pages-data';
-
 // mdx demo
 export const MDX_DEMO_RE = /<Demo\s+src=["'](.*?)["']/;
 export const DEMO_MODULE_ID_PREFIX = '/@pressify/demo/';
