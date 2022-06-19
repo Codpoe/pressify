@@ -49,6 +49,7 @@
     "build:node": "tsc -p src/node",
     "build:client": "tsc -p src/client",
     "build:theme": "node scripts/copyTheme.js",
+    "ci:docs": "pnpm run build && pnpm --filter pressify-docs run build",
     "release": "node scripts/release.js"
   },
   "lint-staged": {
