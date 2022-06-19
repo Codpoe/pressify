@@ -95,7 +95,7 @@ export function Sidebar({
                       key={subIndex}
                       to={subItem.link}
                       color={false}
-                      className={`flex items-center min-h-[30px] px-[1em] -ml-px border-l text-sm hover:text-c-brand transition-colors
+                      className={`flex items-center min-h-[34px] px-[1em] -ml-px border-l text-sm hover:text-c-brand transition-colors
                       ${
                         activeItems.includes(subItem)
                           ? 'text-c-brand border-c-brand'
@@ -119,7 +119,7 @@ export function Sidebar({
               key={index}
               to={item.link}
               color={false}
-              className={`flex items-center min-h-[30px] text-sm hover:text-c-brand transition-colors
+              className={`flex items-center min-h-[34px] text-sm hover:text-c-brand transition-colors
               ${activeItems.includes(item) ? 'text-c-brand' : 'text-c-text-1'}`}
             >
               <TextWithIcon text={item.text} icon={item.icon} space="8px" />
