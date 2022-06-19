@@ -65,12 +65,8 @@ export const Toc: React.FC = () => {
   // scroll -> active
   useScroll(handleScroll);
 
-  if (!toc?.length) {
-    return null;
-  }
-
   return (
-    <div ref={elRef} className="w-[var(--right-aside-width)] pl-3 -ml-3">
+    <div ref={elRef} className="pl-3 -ml-3">
       <div className="mb-2 text-xs text-c-text-0 font-medium">ON THIS PAGE</div>
       <div className="relative">
         <div
@@ -78,7 +74,7 @@ export const Toc: React.FC = () => {
           ${activeIndex >= 0 ? 'opacity-100' : 'opacity-0'}`}
           style={{ top: `${Math.max(activeIndex * 28, 0) + 4}px` }}
         />
-        {toc.map((item, index) => (
+        {toc?.map((item, index) => (
           <Link
             key={index}
             className={`block truncate text-sm leading-7 transition-colors

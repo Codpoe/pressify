@@ -7,14 +7,16 @@ Pressify 主题实质只是一个包含一些属性的对象：
 ```ts
 interface Theme {
   Layout: ComponentType<any>; // React Component
-  NotFound?: ComponentType<any>;
+  NotFound?: ComponentType<any>; // React Component
   mdxComponents?: Record<string, ComponentType<any>>; // mdx 组件，用于自定义 mdx 的渲染
 }
 ```
 
 在你的主题入口需要默认导出这个对象：
 
-```js title=".pressify/theme/index.js"
+```js
+// .pressify/theme/index.js
+
 import { Layout } from './components/Layout';
 import { NotFound } from './components/NotFound';
 import { mdxComponents } from './components/Mdx';

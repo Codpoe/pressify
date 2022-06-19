@@ -1,16 +1,14 @@
 # 配置
 
-类似 VuePress，我们可以在项目的根目录创建 `.pressify` 目录，在这里面可以新建 `config.js` 或 `config.ts` 文件作为配置文件：
+类似 VitePress，我们可以在项目的根目录创建 `.pressify` 目录，在这里面可以新建 `config.js` 或 `config.ts` 文件作为配置文件：
 
-```js title="<root>/.pressify/config.js"
+```js
+// <root>/.pressify/config.js
+
 export default {
   // ....
 };
 ```
-
-<div>Hello World1234</div>
-
-const a = {Math.PI};
 
 如果要获得类型提示，可以从 `pressify` 中导入 `defineConfig` 方法：
 
@@ -18,37 +16,8 @@ const a = {Math.PI};
 import { defineConfig } from 'pressify';
 
 export default defineConfig({
-  // .s
+  // ...
 });
-```
-
-## `src`
-
-默认情况下 Pressify 会扫描 `docs` 目录下特定后缀的文件作为文档内容，并以此生成路由规则。后缀列表如下：
-
-- `.md`
-- `.mdx`
-- `.page.js`
-- `.page.jsx`
-- `.page.ts`
-- `.page.tsx`
-
-如果想修改目录或修改扫描规则，可以使用 `src` 字段，例如：
-
-```js
-export default {
-  src: 'content', // 指定 content 为文档目录
-};
-```
-
-## ignored
-
-可以通过 `ignored` 字段忽略扫描特定的文件：
-
-```js
-export default {
-  ignored: 'test.mdx', // 忽略 test.mdx 文件
-};
 ```
 
 ## themeConfig
@@ -63,7 +32,40 @@ export default {
 };
 ```
 
-> Note: `themeConfig` 可配置的内容是由使用的主题来决定的。不同主题往往对应着不同的配置项。
+:::info
+`themeConfig` 可配置的内容是由使用的主题来决定的。不同主题往往对应着不同的配置项。
+:::
+
+## pages
+
+默认情况下 Pressify 会扫描 `docs` 目录下特定后缀的文件作为文档内容，并以此生成路由规则。后缀列表：
+`.md`、`.mdx`、`.js`、`.jsx`、`.ts`、`.tsx`。
+
+如果想修改目录或修改扫描规则，可以设置 `pages` 字段，例如：
+
+```js
+export default {
+  pages: 'content', // 指定 content 为文档目录
+};
+```
+
+:::info
+Pressify 的路由能力来自于 `vite-plugin-conventional-routes`，详细的 `pages` 配置可以看[该插件的文档](https://github.com/Codpoe/vite-plugins-for-react/blob/master/packages/routes/README.md)。
+:::
+
+## ignore
+
+可以通过 `ignore` 字段忽略扫描特定的文件，例如：
+
+```js
+export default {
+  ignore: 'test.mdx', // 忽略 test.mdx 文件
+};
+```
+
+## useHashRouter
+
+是否使用 Hash 路由。
 
 ## vite
 
@@ -74,31 +76,38 @@ export default {
   vite: {
     base: '/app/',
     outDir: 'output',
+    plugins: [],
   },
 };
 ```
 
 ## react
 
-[@vitejs/plugin-react](https://github.com/vitejs/vite/tree/main/packages/plugin-react)的配置。
+[@vitejs/plugin-react](https://github.com/vitejs/vite/tree/main/packages/plugin-react) 的配置。
 
 ## mdx
 
-通过 `mdx` 字段设置 mdx 的 plugins，例如：
+配置 mdx，例如：
 
 ```js
 export default {
   mdx: {
     remarkPlugins: [require('remark-toc')],
+    rehypePlugins: [],
+    theme: 'material-palenight', // 设置 shiki 语法高亮主题
   },
 };
 ```
+
+:::info
+Pressify 的语法高亮能力来自于 [shiki](https://github.com/shikijs/shiki)。
+:::
 
 ## tailwind
 
 默认情况下 Pressify 会读取项目根目录下的 `tailwind.config.js` 内容作为 [tailwind 的配置](https://tailwindcss.com/docs/configuration)。
 
-如果想使用别的文件名作为 tailwind 配置文件，可以通过 `tailwind` 字段来设置：
+如果想使用别的文件作为 tailwind 配置文件，可以给 `tailwind` 传递一个字符串：
 
 ```js
 export default {

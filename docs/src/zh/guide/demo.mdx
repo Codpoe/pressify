@@ -18,7 +18,9 @@ Pressify 的默认主题实现了简单的 `<Demo />` 组件演示功能，具�
 
 举个例子，可以通过下面的方法替换默认主题的 Demo 组件：
 
-```js hl="16"
+```js
+// .pressify/theme/index.js
+
 import theme from 'pressify/theme';
 
 function CustomDemo({ children, code }) {
@@ -39,4 +41,17 @@ export default {
 };
 ```
 
-Demo 组件 props 的 `children` 属性是 `src` 指定的组件的渲染结果，`code` 属性是源代码内容。
+Demo 组件接收的 props 类型为：
+
+```ts
+interface DemoProps {
+  /* demo 源代码 */
+  code: string;
+  /* 经过 shiki 高亮的代码 html */
+  codeHtml: string;
+  /* demo meta 信息 */
+  meta?: Record<string, any>;
+  /* 组件的渲染结果 */
+  children: React.ReactNode;
+}
+```
