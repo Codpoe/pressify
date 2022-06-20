@@ -15,7 +15,7 @@ function Banner() {
   }
 
   return (
-    <div className="h-[var(--banner-height)] px-6 md:px-8 bg-c-brand leading-[var(--banner-height)] text-center text-white text-xs font-semibold">
+    <div className="h-[var(--banner-height)] px-6 bg-c-brand leading-[var(--banner-height)] text-center text-white text-xs font-semibold">
       {finalBanner.map((x, index) =>
         Array.isArray(x)
           ? React.createElement(x[0], { ...x[1], key: index }, x[2])
@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
     <div className="sticky top-0 w-full z-[var(--z-index-header)]">
       <Banner />
       <header className="h-[var(--header-height)] border-b border-b-c-border-1 bg-c-bg-0">
-        <div className="h-full max-w-8xl mx-auto px-6 md:px-8 flex items-center">
+        <div className="h-full max-w-8xl mx-auto px-6 flex items-center">
           <Link
             className="h-full flex items-center space-x-2 hover:opacity-80 transition-opacity"
             to={homePath}

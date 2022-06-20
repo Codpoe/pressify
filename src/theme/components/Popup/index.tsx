@@ -51,7 +51,7 @@ export const Popup: React.FC<PopupProps> = ({
         mountOnEnter
         unmountOnExit
       >
-        <div className="origin-top-right absolute top-3/4 right-0 w-max min-w-[100px] bg-c-bg-0 py-2 overflow-y-auto rounded-lg border border-c-border-1 border-opacity-5 shadow-md">
+        <div className="origin-top-right absolute top-3/4 right-0 w-max min-w-[100px] bg-c-bg-0 py-1 overflow-y-auto rounded-md border border-c-border-1 border-opacity-5 shadow-md">
           {content}
         </div>
       </CSSTransition>

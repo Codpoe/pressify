@@ -14,9 +14,13 @@ function SubTextNavItem({ item }: { item: NavItem }) {
     <Link
       to={item.link}
       color={false}
-      className={`flex items-center h-8 px-4 whitespace-nowrap transition-colors
-        hover:text-c-brand
-        ${active ? 'text-c-brand' : ''}
+      className={`relative z-0 flex items-center min-h-[32px] px-2 py-1.5 whitespace-nowrap transition-all
+        before:absolute before:top-0 before:bottom-0 before:left-0 before:right-0 before:rounded before:bg-current before:z-[-1] before:transition-opacity
+        ${
+          active
+            ? 'text-c-brand font-medium before:opacity-[0.12]'
+            : 'before:opacity-0 hover:before:opacity-[0.06]'
+        }
       `}
     >
       <TextWithIcon text={item.text} icon={item.icon} space="8px" />
@@ -69,9 +73,13 @@ export function TextNav() {
           <Popup
             key={index}
             className="h-full"
-            content={item.items.map((subItem, index) => (
-              <SubTextNavItem key={index} item={subItem} />
-            ))}
+            content={
+              <div className="px-1 space-y-[3px]">
+                {item.items.map((subItem, index) => (
+                  <SubTextNavItem key={index} item={subItem} />
+                ))}
+              </div>
+            }
           >
             <TextNavItem item={item} />
           </Popup>

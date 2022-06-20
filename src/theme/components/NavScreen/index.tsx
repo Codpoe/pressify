@@ -111,8 +111,8 @@ function SubNavItem({ item }: { item: INavItem }) {
 
   return (
     <Link
-      className={`flex items-center h-8 px-4 text-c-text-0 ${
-        active ? 'text-c-brand' : ''
+      className={`flex items-center h-8 px-4 ${
+        active ? 'text-c-brand' : 'text-c-text-0'
       }`}
       to={item.link}
       color={false}
