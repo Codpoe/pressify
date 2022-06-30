@@ -21,9 +21,6 @@ export async function bundle(
       logLevel: 'warn',
       // @ts-ignore
       ssr: {
-        // set react-helmet to external so that we can use the same instance of react-helmet.
-        // see: https://github.com/nfl/react-helmet#note-use-the-same-instance
-        // external: ['react-helmet'],
         noExternal: [
           'pressify',
           /pressify-theme-/,
