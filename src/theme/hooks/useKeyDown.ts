@@ -10,5 +10,6 @@ export function useKeyDown(
     return () => {
       window.removeEventListener('keydown', callback);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 }
