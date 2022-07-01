@@ -112,9 +112,9 @@ function mdxDemo(options: Pick<MdxOptions, 'theme'>): Plugin {
   };
 }
 
-function mdxCodeDemo({
-  transformDemo,
-}: Pick<MdxOptions, 'transformDemo'>): Plugin {
+function mdxCodeDemo(
+  options: Pick<MdxOptions, 'transformDemo' | 'theme'>
+): Plugin {
   return {
     name: `pressify:mdx-code-demo`,
     resolveId(source) {
@@ -124,7 +124,9 @@ function mdxCodeDemo({
     },
     load(id) {
       if (id.startsWith(CODE_DEMO_MODULE_ID_PREFIX)) {
-        return loadCodeDemo(id, transformDemo);
+        // clean query string
+        id = id.split('?')[0];
+        return loadCodeDemo(id, options);
       }
     },
   };

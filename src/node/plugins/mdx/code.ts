@@ -3,19 +3,26 @@ import { visit } from 'unist-util-visit';
 import { Parser } from 'acorn';
 import jsx from 'acorn-jsx';
 import type { Plugin } from 'unified';
-import type { MdxJsxAttribute, MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
+import type {
+  MdxJsxAttribute,
+  MdxJsxExpressionAttribute,
+  MdxJsxFlowElement,
+} from 'mdast-util-mdx-jsx';
 import type { MdxjsEsm } from 'mdast-util-mdxjs-esm';
 import type { Code } from 'mdast';
 import { CODE_DEMO_MODULE_ID_PREFIX } from '../../common/constants.js';
+import { MdxOptions } from '../../common/types.js';
+import { getHighlighter, Highlighter } from './highlight.js';
 
 const parser = Parser.extend(jsx());
 
-const moduleIdToCodeMap: Record<string, string> = {};
+const moduleIdToCodeMap = new Map<
+  string,
+  { code: string; language?: string }
+>();
 
 function checkIsDemo(meta: string) {
-  const demo = /(^|\s)(demo|demo=\{true\})($|\s)/.test(meta);
-  const onlyDemo = /(^|\s)(onlyDemo|onlyDemo=\{true\})($|\s)/.test(meta);
-  return { demo, onlyDemo };
+  return /(^|\s)(demo|demo=\{true\})($|\s)/.test(meta);
 }
 
 function getCodeDemoId(currentSize: number) {
@@ -39,9 +46,7 @@ export const remarkMdxCodeDemo: Plugin = () => (tree: any, file) => {
       return;
     }
 
-    const { demo, onlyDemo } = checkIsDemo(node.meta);
-
-    if (!demo && !onlyDemo) {
+    if (!checkIsDemo(node.meta)) {
       return;
     }
 
@@ -53,10 +58,21 @@ export const remarkMdxCodeDemo: Plugin = () => (tree: any, file) => {
       return file.fail('Demo must have the default export');
     }
 
-    // store the code content for loading the component
-    moduleIdToCodeMap[codeDemoModuleId] = node.value;
+    const prevCode = moduleIdToCodeMap.get(codeDemoModuleId);
+    const hasChanged = Boolean(prevCode && prevCode.code !== node.value);
 
-    // push `import __code_demo_0 from '/@pressify/code-demo/xxx'`
+    // if the code value has changed, append timestamp to refresh demo import
+    const importSource = hasChanged
+      ? `${codeDemoModuleId}?v=${Date.now()}`
+      : codeDemoModuleId;
+
+    // store the code content for loading the component
+    moduleIdToCodeMap.set(codeDemoModuleId, {
+      code: node.value,
+      language: node.lang ?? undefined,
+    });
+
+    // push `import * as __code_demo_0 from '/@pressify/code-demo/xxx'`
     imports.push({
       type: 'mdxjsEsm',
       data: {
@@ -68,7 +84,7 @@ export const remarkMdxCodeDemo: Plugin = () => (tree: any, file) => {
               type: 'ImportDeclaration',
               specifiers: [
                 {
-                  type: 'ImportDefaultSpecifier',
+                  type: 'ImportNamespaceSpecifier',
                   local: {
                     type: 'Identifier',
                     name: codeDemoId,
@@ -77,8 +93,8 @@ export const remarkMdxCodeDemo: Plugin = () => (tree: any, file) => {
               ],
               source: {
                 type: 'Literal',
-                value: codeDemoModuleId,
-                raw: JSON.stringify(codeDemoModuleId),
+                value: importSource,
+                raw: JSON.stringify(importSource),
               },
             },
           ],
@@ -86,29 +102,12 @@ export const remarkMdxCodeDemo: Plugin = () => (tree: any, file) => {
       },
     });
 
-    // pass the original code content to the code prop for presentation
-    const demoAttributes: MdxJsxAttribute[] = [
+    // spread imported codeDemoId
+    // <Demo {...codeDemoId} />
+    const demoAttributes: (MdxJsxAttribute | MdxJsxExpressionAttribute)[] = [
       {
-        type: 'mdxJsxAttribute',
-        name: 'code',
-        value: node.value,
-      },
-    ];
-
-    // pass the `language` prop
-    if (node.lang) {
-      demoAttributes.push({
-        type: 'mdxJsxAttribute',
-        name: 'language',
-        value: node.lang,
-      });
-    }
-
-    // pass the `onlyDemo` prop
-    if (onlyDemo) {
-      demoAttributes.push({
-        type: 'mdxJsxAttribute',
-        name: 'onlyDemo',
+        type: 'mdxJsxExpressionAttribute',
+        value: `...${codeDemoId}`,
         data: {
           estree: {
             type: 'Program',
@@ -117,25 +116,36 @@ export const remarkMdxCodeDemo: Plugin = () => (tree: any, file) => {
               {
                 type: 'ExpressionStatement',
                 expression: {
-                  type: 'Literal',
-                  value: true,
-                  raw: 'true',
+                  type: 'ObjectExpression',
+                  properties: [
+                    {
+                      type: 'SpreadElement',
+                      argument: {
+                        type: 'Identifier',
+                        name: codeDemoId,
+                      },
+                    },
+                  ],
                 },
               },
             ],
           },
         },
-      });
-    }
+      },
+    ];
 
     const demoNode: MdxJsxFlowElement = {
       type: 'mdxJsxFlowElement',
       name: 'Demo',
       attributes: demoAttributes,
+      // set children for render
+      // <Demo>
+      //   <codeDemoId.default />
+      // </Demo>
       children: [
         {
           type: 'mdxJsxFlowElement',
-          name: codeDemoId,
+          name: `${codeDemoId}.default`,
           attributes: [],
           children: [],
         },
@@ -143,24 +153,6 @@ export const remarkMdxCodeDemo: Plugin = () => (tree: any, file) => {
     };
 
     parent.children[index!] = demoNode;
-
-    // // normal code block
-    // parser ??= Parser.extend(jsx());
-
-    // const code = JSON.stringify(`${node.value}\n`);
-    // // set the `block` to true to let the code component know that this is a code block.
-    // // set language className
-    // const codeProps = `block ${
-    //   node.lang ? `className="language-${node.lang}"` : ''
-    // }`;
-    // const value = `<pre ${node.meta}><code ${codeProps}>{${code}}</code></pre>`;
-    // const estree = parser.parse(value, { ecmaVersion: 'latest' });
-
-    // parent.children[index!] = {
-    //   type: 'mdxFlowExpression',
-    //   value,
-    //   data: { estree },
-    // } as Literal;
   });
 
   // add imports
@@ -194,15 +186,42 @@ export const remarkMdxCodeMeta: Plugin = () => (tree: any) => {
   });
 };
 
-export function loadCodeDemo(
+let getHighlighterPromise: Promise<Highlighter> | null = null;
+
+export async function loadCodeDemo(
   moduleId: string,
-  transformDemo?: (code: string) => string
+  options: Pick<MdxOptions, 'transformDemo' | 'theme'>
 ) {
-  const code = moduleIdToCodeMap[moduleId];
+  const { code, language } = moduleIdToCodeMap.get(moduleId) || {};
 
   if (!code) {
     throw new Error(`Code content of ${moduleId} is empty`);
   }
 
-  return transformDemo?.(code) || code;
+  const finalCode = options.transformDemo?.(code) || code;
+
+  if (!getHighlighterPromise) {
+    getHighlighterPromise = getHighlighter(options.theme);
+  }
+
+  const { highlight, theme } = await getHighlighterPromise;
+
+  let codeHtml: string;
+
+  if (typeof theme === 'string') {
+    codeHtml = highlight(finalCode, language);
+  } else {
+    codeHtml =
+      highlight(finalCode, language, 'light') +
+      highlight(finalCode, language, 'dark');
+  }
+
+  return `
+${finalCode}
+
+export const code = ${JSON.stringify(finalCode)};
+export const codeHtml = ${JSON.stringify(codeHtml)};
+export const meta = {};
+export const language = '${language || ''}';
+`;
 }
