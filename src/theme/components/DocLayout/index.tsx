@@ -76,7 +76,7 @@ export const DocLayout: React.FC = () => {
             hasSidebar ? 'lg:pl-[var(--left-aside-width)]' : ''
           }`}
         >
-          <div className="w-full max-w-4xl min-w-0 mx-auto pt-8 pb-24 px-6 md:px-8">
+          <div className="w-full max-w-[850px] min-w-0 mx-auto pt-8 pb-24 px-6 md:px-8">
             <Mdx className="mb-16">
               <Page fallback={<Loading className="text-xl" />} />
             </Mdx>
