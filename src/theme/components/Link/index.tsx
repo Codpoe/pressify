@@ -17,7 +17,7 @@ export const Link: React.FC<LinkProps> = props => {
     color = true,
     ...restProps
   } = props;
-  const isSameOrigin = to.startsWith('/');
+  const isSameOrigin = !to.startsWith('http');
   const isHash = to.startsWith('#');
 
   const finalClassName = `${className} ${
@@ -26,7 +26,7 @@ export const Link: React.FC<LinkProps> = props => {
 
   const finalChildren = <>{children}</>;
 
-  return isSameOrigin ? (
+  return isSameOrigin && !isHash ? (
     <RouterLink {...restProps} className={finalClassName} to={to}>
       {finalChildren}
     </RouterLink>

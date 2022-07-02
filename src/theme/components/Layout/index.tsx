@@ -26,7 +26,7 @@ const InternalLayout: React.FC = () => {
   return (
     <>
       <Header />
-      {pageData?.meta?.home ? <HomeLayout /> : <DocLayout />}
+      {pageData?.meta?.layout === 'home' ? <HomeLayout /> : <DocLayout />}
     </>
   );
 };
@@ -59,7 +59,7 @@ export const Layout: React.FC = () => {
 
   const homePaths = useMemo(() => {
     return Object.keys(pagesData)
-      .filter(path => pagesData[path].meta.home)
+      .filter(path => pagesData[path].meta?.layout === 'home')
       .sort((pathA, pathB) => pathA.length - pathB.length);
   }, [pagesData]);
 
