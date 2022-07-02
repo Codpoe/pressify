@@ -61,7 +61,7 @@ export const DocLayout: React.FC = () => {
           onOpenChange={setSidebarOpen}
         />
       )}
-      <div className="max-w-[90rem] mx-auto">
+      <div className="max-w-[90rem] w-full mx-auto flex">
         {hasSidebar && (
           <Sidebar
             items={sidebar}
@@ -72,28 +72,28 @@ export const DocLayout: React.FC = () => {
         )}
         <div
           key={pagePath}
-          className={`w-full flex justify-center items-start ${
+          className={`flex-1 w-full ${
             hasSidebar ? 'lg:pl-[var(--left-aside-width)]' : ''
           }`}
         >
-          <div className="w-full max-w-[850px] min-w-0 mx-auto pt-8 pb-24 px-6 md:px-8">
+          <div className="max-w-[850px] min-w-0 w-full mx-auto pt-8 pb-24 px-6 md:px-8">
             <Mdx className="mb-16">
               <Page fallback={<Loading className="text-xl" />} />
             </Mdx>
             <UpdateInfo />
             <PrevNext />
           </div>
-          {(hasSidebar || hasToc) && (
-            <div
-              className="hidden xl:block
+        </div>
+        {(hasSidebar || hasToc) && (
+          <div
+            className="hidden xl:block
             sticky top-[calc(var(--header-height)+var(--banner-height))]
             w-[var(--right-aside-width)] max-h-[calc(100vh-var(--header-height)-var(--banner-height))]
             shrink-0 pt-8 pb-24 overflow-y-auto"
-            >
-              <Toc />
-            </div>
-          )}
-        </div>
+          >
+            <Toc />
+          </div>
+        )}
       </div>
     </>
   );
