@@ -5,7 +5,7 @@ import { MdxJsxAttribute, MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
 const calloutTypes = ['tip', 'info', 'warning', 'danger'];
 
 function getDirectiveTitle(node: any) {
-  const maybeLabel = node.children?.[0]?.value;
+  const maybeLabel = node?.children?.[0]?.value;
 
   if (
     node?.type === 'paragraph' &&
@@ -26,9 +26,11 @@ export const remarkCallout: Plugin<[]> = () => tree => {
   visit(
     tree,
     (node: any) =>
-      node.type === 'containerDirective' && calloutTypes.includes(node.name),
+      node.type === 'containerDirective' &&
+      calloutTypes.includes(node.name?.toLowerCase?.()),
     (node: any, index, parent) => {
-      const calloutType = node.name;
+      // Convert to lowercase for better fault tolerance
+      const calloutType = node.name.toLowerCase();
       const calloutTitle = getDirectiveTitle(node.children?.[0]);
       const calloutContent = calloutTitle
         ? node.children.slice(1)
