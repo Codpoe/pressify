@@ -61,7 +61,7 @@ export const DocLayout: React.FC = () => {
           onOpenChange={setSidebarOpen}
         />
       )}
-      <div className="max-w-[90rem] w-full mx-auto flex">
+      <div className="max-w-[90rem] w-full mx-auto flex relative">
         {hasSidebar && (
           <Sidebar
             items={sidebar}
@@ -74,7 +74,7 @@ export const DocLayout: React.FC = () => {
           key={pagePath}
           className={`flex-1 w-full ${
             hasSidebar ? 'lg:pl-[var(--left-aside-width)]' : ''
-          }`}
+          } ${hasSidebar || hasToc ? 'xl:pr-[var(--right-aside-width)]' : ''}`}
         >
           <div className="max-w-[850px] min-w-0 w-full mx-auto pt-8 pb-24 px-6 md:px-8">
             <Mdx className="mb-16">
@@ -85,13 +85,10 @@ export const DocLayout: React.FC = () => {
           </div>
         </div>
         {(hasSidebar || hasToc) && (
-          <div
-            className="hidden xl:block
-            sticky top-[calc(var(--header-height)+var(--banner-height))]
-            w-[var(--right-aside-width)] max-h-[calc(100vh-var(--header-height)-var(--banner-height))]
-            shrink-0 pt-8 pb-24 overflow-y-auto"
-          >
-            <Toc />
+          <div className="hidden xl:block absolute top-0 right-0 w-[var(--right-aside-width)] h-full">
+            <div className="sticky top-[calc(var(--header-height)+var(--banner-height))] max-h-[calc(100vh-var(--header-height)-var(--banner-height))] pt-8 pb-24 overflow-y-auto">
+              <Toc />
+            </div>
           </div>
         )}
       </div>
