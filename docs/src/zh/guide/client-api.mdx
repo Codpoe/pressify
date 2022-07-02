@@ -1,0 +1,116 @@
+# client API
+
+为了方便开发主题，Pressify 通过 `pressify/client` 暴露了很多 API：
+
+```ts
+import { ... } from 'pressify/client';
+```
+
+## react-router-dom
+
+`presssify/client` re-export 了 `react-router-dom` 的大部分 API，应该能满足主题开发了。
+
+## 组件
+
+### Helmet
+
+Helmet 组件用于设置 html meta 等。
+
+```ts
+import { Helmet } from 'pressify/client';
+
+function Layout() {
+  return (
+    <Helmet>
+      <html lang="zh" />
+      <meta name="description" content="pressify" />
+    </Helmet>
+  );
+}
+```
+
+### Page
+
+Page 组件用于渲染页面内容。
+
+```ts
+import { Page } from 'pressify/client';
+
+function Layout() {
+  return (
+    <div>
+      <header />
+      <Page />
+      <footer />
+    </div>
+  );
+}
+```
+
+### Link
+
+基于 react-router-dom 的 Link，加上 hover 预加载、进度条展示的功能。
+
+### NoSSR
+
+对于不想进行 ssr 的内容，可以用 NoSSR 组件包一层：
+
+```ts
+import { Page } from 'pressify/client';
+
+function Layout() {
+  return (
+    <div>
+      <NoSSR>仅在 client 渲染</NoSSR>
+    </div>
+  );
+}
+```
+
+## hooks
+
+### useAppState
+
+获取 App 状态信息。
+
+```ts
+interface AppState {
+  theme: Theme;
+  routes: Route[];
+  pagesData: Record<string, PageData>;
+  pagePath?: string;
+  pageData?: PageData;
+  pageModule?: any;
+  pageLoading: boolean;
+  pageError: Error | null;
+}
+
+interface Theme {
+  Layout: ComponentType<any>;
+  NotFound?: ComponentType<any>;
+  mdxComponents?: Components;
+}
+
+interface Route {
+  path: string;
+  component: any;
+  element: any;
+  children?: Route[];
+  meta?: Record<string, any>;
+}
+
+interface PageData {
+  basePath: string;
+  routePath: string;
+  filePath: string;
+  meta?: Record<string, any>;
+}
+```
+
+### useThemeConfig
+
+获取用户的主题配置。
+
+### useIsMounted
+
+获取当前组件的 mounted 状态。

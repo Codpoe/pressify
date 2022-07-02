@@ -70,6 +70,10 @@ export default defineConfig<ThemeConfig>({
             text: '自定义主题',
             link: '/zh/guide/custom-theme',
           },
+          {
+            text: 'client API',
+            link: '/zh/guide/client-api',
+          },
         ],
       },
     },
