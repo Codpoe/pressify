@@ -1,0 +1,221 @@
+---
+poetry: 落霞与孤鹜齐飞，秋水共长天一色
+---
+
+import IconLike from '~icons/ant-design/like-outlined';
+
+# 书写 MDX
+
+pressify 的底层使用了 MDX，它融合了 Markdown 和 JSX 语法，使得我们可以在 Markdown 中直接写 JSX 或者使用外部组件。
+
+## 使用 Markdown
+
+在 MDX 中，Markdown 也就还是那个你熟悉的 Markdown：
+
+```
+### 无题
+锦瑟无端五十弦，一弦一柱思华年
+```
+
+上面的 Markdown 会渲染成如下内容：
+
+### 无题
+
+锦瑟无端五十弦，一弦一柱思华年
+
+## 元数据
+
+可以在 MDX 文件开头以 YAML 语法写一些元数据，也就是 `front-matter`。
+这些数据可用于主题渲染，我们也可以在 MDX 中通过 `meta.xxx` 获取到相应的数据。
+例如当前这个你所看到的页面就有如下的元数据：
+
+```
+---
+poetry: 落霞与孤鹜齐飞，秋水共长天一色
+---
+```
+
+在 MDX 中写 `{meta.poetry}` 会渲染出对应的内容，即：
+
+> {meta.poetry}
+
+:::info
+pressify 会优先使用元数据的 `title` 字段作为页面的标题。
+如果没显式说明 `title`，pressify 默认会读取 markdown 内容的第一个一级标题作为该页面的标题，也就是 `# {your title}`。
+:::
+
+## 代码块
+
+pressify 底层使用 `shiki` 在编译时把代码块渲染成带有高亮样式的 html。
+
+````
+```ts
+function say(text: string) {
+  console.log(text);
+}
+say('Hello World!');
+```
+````
+
+会渲染成 ↓↓↓：
+
+```ts
+function say(text: string) {
+  console.log(text);
+}
+say('Hello World!');
+```
+
+### demo 标记
+
+当在代码块的 ```{' '}后加上{' '}`demo` 标记，这个代码块就会变成一个 Demo。例如：
+
+````
+```ts demo
+export default function Foo() {
+  return (
+    <button
+      className="px-3 py-1 rounded text-white bg-c-brand hover:bg-c-brand-light"
+      onClick={() => alert('Hi')}
+    >
+      Hello World
+    </button>
+  );
+}
+```
+````
+
+会渲染成 ↓↓↓：
+
+```ts demo
+export default function Foo() {
+  return (
+    <button
+      className="px-3 py-1 rounded text-white bg-c-brand hover:bg-c-brand-light"
+      onClick={() => alert('Hi')}
+    >
+      Hello World
+    </button>
+  );
+}
+```
+
+## Callout 块
+
+我们可以使用 `:::` 来高亮标注一些内容，即 `Callout`。
+
+```
+:::tip[提示]
+这是提示的内容。
+:::
+```
+
+### Callout 的类型
+
+Pressify 支持四种 Callout 类型：`tip`、`info`、`warning`、`danger`。
+
+:::tip[提示]
+这是提示的内容。
+:::
+
+:::info[一般信息]
+向用户传达一般信息。
+:::
+
+:::warning[警告]
+警告用户可能需要注意的事项。
+:::
+
+:::danger[危险]
+让用户知道某些可能会导致问题的操作等。
+:::
+
+方括号里的文本会作为 Callout 的标题，如果为空，默认会使用类型名作为标题。
+另外，Callout 的内容也可以为空。例如：
+
+```
+:::tip
+:::
+
+:::warning[注意一下]
+:::
+```
+
+这会渲染成：
+
+:::tip
+:::
+
+:::warning[注意一下]
+:::
+
+### 使用 Callout 组件
+
+除了使用上面说的 `:::` 来实现 Callout 外，我们还可以直接在 Markdown 中使用 `<Callout />` 组件。
+
+```jsx
+import IconLike from '~icons/ant-design/like-outlined';
+
+<Callout type="tip" title="这是 Callout 组件的标题">
+  这是 Callout 组件的内容
+</Callout>
+
+<Callout type="info" title="这个 Callout 使用了组件 icon" icon={IconLike}>
+  组件 icon
+</Callout>
+
+<Callout type="warning" title="这个 Callout 传了字符串 icon" icon="🎉">
+  字符串 icon
+</Callout>
+```
+
+<Callout type="tip" title="这是 Callout 组件的标题">
+  这是 Callout 组件的内容
+</Callout>
+
+<Callout type="info" title="这个 Callout 使用了组件 icon" icon={IconLike}>
+  组件 icon
+</Callout>
+
+<Callout type="warning" title="这个 Callout 传了字符串 icon" icon="❗️">
+  字符串 icon
+</Callout>
+
+## 使用外部组件
+
+MDX 能让我们在 Markdown 中使用外部组件，只需要在 Markdown 中写 `import` 语句就行，就像普通的 JS 模块那样：
+
+```
+import Button from './Button';
+
+# 标题
+
+这是 Markdown 文件，但这里使用了外部组件：
+
+<Button onClick={() => alert('Hi')} />
+```
+
+## 使用 Tailwind CSS 调整样式
+
+有时我们想直接在 Markdown 中写一些样式更丰富的内容，此时可使用 Tailwind CSS 直接调整标签的类名。
+例如想实现双列布局的效果，可这么写：
+
+```html
+<div className="grid grid-cols-2 gap-2 whitespace-pre-wrap font-medium">
+  <div className="px-4 bg-amber-600/10 rounded-md">
+    锦瑟无端五十弦，一弦一柱思华年
+  </div>
+  <div className="px-4 bg-red-600/10 rounded-md">
+    落霞与孤鹜齐飞，秋水共长天一色
+  </div>
+</div>
+```
+
+<div className="grid grid-cols-2 gap-2 whitespace-pre-wrap font-medium">
+  <div className="px-4 bg-amber-600/10 rounded-md">
+    锦瑟无端五十弦，一弦一柱思华年
+  </div>
+  <div className="px-4 bg-red-600/10 rounded-md">
+    落霞与孤鹜齐飞，秋水共长天一色
+  </div>
+</div>

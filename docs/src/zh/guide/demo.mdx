@@ -1,15 +1,75 @@
-# 使用 Demo 组件进行演示
+# 写组件 demo
 
-Pressify 的默认主题实现了简单的 `<Demo />` 组件演示功能，具体而言就是长这样：
+Pressify 支持两种写组件 demo 的方式，适用于不同的场景。
 
-<Demo src="/demo/Button.tsx" />
+## 代码块 demo
 
-这对于演示组件效果是比较有帮助的。而要实现这样的效果，只需在我们的 mdx 文档中使用内置的 `Demo` 组件，
-把组件的路径传给 `src` 属性，类似这样：
+对于简单的组件 demo，我们可以直接在 Markdown 代码块中写 demo。
+当在代码块的 ```{' '}后加上{' '}`demo` 标记，这个代码块就会变成一个 demo。例如：
 
-```mdx title="my-demo.mdx"
-<Demo src="/demoComponents/Button.tsx" />
+````
+```ts demo
+export default function Foo() {
+  return (
+    <button
+      className="px-3 py-1 rounded text-white bg-c-brand hover:bg-c-brand-light"
+      onClick={() => alert('Hi')}
+    >
+      Hello World
+    </button>
+  );
+}
 ```
+````
+
+会渲染成 ↓↓↓：
+
+```ts demo
+export default function Foo() {
+  return (
+    <button
+      className="px-3 py-1 rounded text-white bg-c-brand hover:bg-c-brand-light"
+      onClick={() => alert('Hi')}
+    >
+      代码块 demo
+    </button>
+  );
+}
+```
+
+## 外部 demo
+
+对于比较复杂的 demo，如果还是“内联”在 Markdown 代码块中，就享受不到编辑器提供的类型提示、ESLint、Prettier 等功能的好处了，体验会有点糟糕。
+建议把复杂的 demo 写在外部 JS/TS 文件中，然后在 Markdown 中通过 `<Demo src="xxx" />` 的形式引入这个 demo 组件。
+
+例如我们在 `<root>/.pressify/demo/Button.tsx` 有这样的组件 demo：
+
+```tsx
+export default function Button() {
+  return (
+    <button
+      className="px-3 py-1 rounded text-white bg-sky-500 hover:bg-sky-400"
+      onClick={() => alert('Hi')}
+    >
+      外部 demo
+    </button>
+  );
+}
+```
+
+然后在 Markdown 中把该组件路径传给 `Demo` 组件的 `src` 属性：
+
+```mdx
+<Demo src="/.pressify/demo/Button.tsx" />
+```
+
+就能实现这样的 demo 效果啦：
+
+<Demo src="/.pressify/demo/Button.tsx" />
+
+:::tip
+其实代码块 demo 底层也是基于 `<Demo />` 组件来实现的。
+:::
 
 ## 自定义 Demo 组件
 

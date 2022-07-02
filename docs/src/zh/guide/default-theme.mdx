@@ -1,3 +1,5 @@
+import IconGithub from '~icons/uiw/github';
+
 # 默认主题
 
 Pressify 自带了一个默认主题（就是你现在看到的这个），很多样式参考了 [Vue.js 的官方文档](https://vuejs.org/guide)。
@@ -97,10 +99,19 @@ export default {
         text: '指南',
         link: '/zh/guide',
       },
+      {
+        icon: 'uiw/github',
+        link: 'https://github.com/codpoe/pressify',
+      },
     ],
   },
 };
 ```
+
+以上配置会渲染出一个文字导航「文档」和一个图标导航「<IconGithub className="text-sm" />」。
+配置里的图标 `uiw/github` 来自于 [icones](https://icones.js.org/)。
+Pressify 内置了 [`unplugin-icons`](https://github.com/antfu/unplugin-icons)，
+所以可以获取到 [icones](https://icones.js.org/) 里所有的图标。
 
 `activeMatch?: string` 可用于设置正则来匹配是否高亮，例如：
 

@@ -11,6 +11,7 @@ export default defineConfig<ThemeConfig>({
     banner: 'This is early WIP!',
     docsRepo: 'codpoe/pressify',
     editLink: true,
+    // TODO
     algolia: {
       apiKey: 'x',
       appId: 'x',
@@ -33,7 +34,7 @@ export default defineConfig<ThemeConfig>({
         sidebar: [
           {
             icon: 'twemoji:information',
-            text: '项目介绍',
+            text: 'Pressify 是什么',
             link: '/zh/guide',
           },
           {
@@ -42,29 +43,32 @@ export default defineConfig<ThemeConfig>({
             link: '/zh/guide/getting-started',
           },
           {
-            icon: 'twemoji:gear',
             text: '配置',
             link: '/zh/guide/config',
           },
           {
-            icon: 'twemoji:world-map',
-            text: '路由规则',
+            text: '页面与路由',
             link: '/zh/guide/routes',
           },
           {
-            icon: 'twemoji:womans-clothes',
+            text: '书写 MDX',
+            link: '/zh/guide/write-mdx',
+          },
+          {
+            text: '写组件 demo',
+            link: '/zh/guide/demo',
+          },
+          {
+            text: '部署',
+            link: '/zh/guide/deploy',
+          },
+          {
             text: '默认主题',
             link: '/zh/guide/default-theme',
           },
           {
-            icon: 'twemoji:rainbow',
             text: '自定义主题',
             link: '/zh/guide/custom-theme',
-          },
-          {
-            icon: 'twemoji:collision',
-            text: '使用 Demo 组件进行演示',
-            link: '/zh/guide/demo',
           },
         ],
       },

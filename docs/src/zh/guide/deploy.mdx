@@ -1,0 +1,20 @@
+# 部署
+
+:::warning[WIP]
+:::
+
+我们的项目 `package.json` 应该有类似这样的 scripts：
+
+```json
+{
+  "scripts": {
+    "dev": "pressify dev",
+    "build": "pressify build",
+    "serve": "pressify serve"
+  }
+}
+```
+
+执行 `yarn build` 后，Pressify 默认会把构建产物输出到 `dist` 目录下，
+接着我们可以执行 `yarn serve`，这会在 `http://localhost:5000` 启动一个服务，打开这个地址应该能预览构建出来的站点。
+如果预览没问题后，我们就可以将 `dist` 目录部署在 now.sh、GitHub Pages 等静态站点托管平台或者服务器上了。

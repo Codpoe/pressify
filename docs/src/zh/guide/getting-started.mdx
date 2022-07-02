@@ -25,7 +25,8 @@ yarn add -D pressify
 {
   "scripts": {
     "dev": "pressify dev",
-    "build": "pressify build"
+    "build": "pressify build",
+    "serve": "pressify serve"
   }
 }
 ```
@@ -43,3 +44,10 @@ yarn dev
 ```
 
 这会在 `http://localhost:3000` 启动一个开发服务器，打开这个地址应该就能看到你的站点了。
+
+// TODO: site image
+
+7. 构建及部署
+
+执行 `yarn build` 后，Pressify 默认会把构建产物输出到 `dist` 目录下，
+我们可以将 `dist` 目录部署在 now.sh、GitHub Pages 等静态站点托管平台或者服务器上。
