@@ -93,7 +93,7 @@ export const PrevNext: React.FC = () => {
   }
 
   return (
-    <div className="flex justify-between items-center mt-4 pt-4 space-x-8 border-t border-c-border-1">
+    <div className="flex justify-between items-start mt-4 pt-4 space-x-8 border-t border-c-border-1">
       <Item type="prev" item={prev} />
       <Item type="next" item={next} />
     </div>

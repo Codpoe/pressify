@@ -12,11 +12,11 @@ export default defineConfig<ThemeConfig>({
     docsRepo: 'codpoe/pressify',
     editLink: true,
     // TODO
-    algolia: {
-      apiKey: 'x',
-      appId: 'x',
-      indexName: 'x',
-    },
+    // algolia: {
+    //   apiKey: 'x',
+    //   appId: 'x',
+    //   indexName: 'x',
+    // },
     themeConfigByPaths: {
       '/zh': {
         locale: 'zh',
