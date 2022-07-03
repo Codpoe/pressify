@@ -25,7 +25,6 @@ export async function bundle(
           'pressify',
           /pressify-theme-/,
           '@mdx-js/react',
-          'react-syntax-highlighter',
           'lodash-es',
         ],
       },

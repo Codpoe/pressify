@@ -94,12 +94,36 @@ export function createPressifyPlugin(
               replacement: require.resolve('react-helmet-async'),
             },
             {
+              find: /^react-transition-group$/,
+              replacement: require.resolve('react-transition-group'),
+            },
+            {
               find: /^@mdx-js\/react$/,
               replacement: require.resolve('@mdx-js/react'),
             },
             {
               find: /^valtio$/,
               replacement: require.resolve('valtio'),
+            },
+            {
+              find: /^nprogress$/,
+              replacement: require.resolve('nprogress'),
+            },
+            {
+              find: /^@docsearch\/css$/,
+              replacement: require.resolve('@docsearch/css'),
+            },
+            {
+              find: /^@docsearch\/react$/,
+              replacement: require.resolve('@docsearch/react'),
+            },
+            {
+              find: /^@docsearch\/react\/modal$/,
+              replacement: require.resolve('@docsearch/react/modal'),
+            },
+            {
+              find: /^lodash-es\/throttle$/,
+              replacement: require.resolve('lodash-es/throttle'),
             },
             {
               find: THEME_MODULE_ID,
@@ -121,20 +145,14 @@ export function createPressifyPlugin(
             'react-dom/client',
             'react-router-dom',
             'react-helmet-async',
+            'react-transition-group',
             'valtio',
             '@mdx-js/react',
+            'nprogress',
             // default theme deps
             '@docsearch/css',
             '@docsearch/react',
             '@docsearch/react/modal',
-            'nprogress',
-            'react-syntax-highlighter/dist/esm/prism-light',
-            'react-syntax-highlighter/dist/esm/styles/prism/one-light',
-            'react-syntax-highlighter/dist/esm/styles/prism/one-dark',
-            'react-syntax-highlighter/dist/esm/languages/prism/index',
-            'react-transition-group',
-            'lodash-es',
-            'lodash-es/debounce',
             'lodash-es/throttle',
           ],
         },
