@@ -86,7 +86,7 @@ export const DocLayout: React.FC = () => {
         </div>
         {(hasSidebar || hasToc) && (
           <div className="hidden xl:block absolute top-0 right-0 w-[var(--right-aside-width)] h-full">
-            <div className="sticky top-[calc(var(--header-height)+var(--banner-height))] max-h-[calc(100vh-var(--header-height)-var(--banner-height))] pt-8 pb-24 overflow-y-auto">
+            <div className="sticky top-[calc(var(--header-height)+var(--banner-height))] max-h-[calc(100vh-var(--header-height)-var(--banner-height))] pt-8 pb-24 pl-3 overflow-y-auto">
               <Toc />
             </div>
           </div>

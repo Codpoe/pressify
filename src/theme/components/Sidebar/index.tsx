@@ -120,7 +120,7 @@ function SidebarLink({ item, active }: { item: SidebarItem; active: boolean }) {
     <Link
       to={item.link}
       color={false}
-      className={`relative flex items-center min-h-[34px] mb-[3px] px-2 py-1.5 text-sm transition-all
+      className={`relative flex items-center min-h-[34px] mb-[3px] px-2 py-1.5 text-sm font-medium transition-all
       ${
         active
           ? 'text-c-brand font-medium before:opacity-[0.12]'

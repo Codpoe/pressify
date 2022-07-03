@@ -66,8 +66,8 @@ export const Toc: React.FC = () => {
   useScroll(handleScroll);
 
   return (
-    <div ref={elRef} className="pl-3">
-      <div className="mb-2 text-xs text-c-text-0 font-medium">ON THIS PAGE</div>
+    <div ref={elRef}>
+      <div className="mb-2 text-xs text-c-text-0 font-bold">ON THIS PAGE</div>
       <div className="relative">
         <div
           className={`absolute -left-3 w-1 h-5 rounded bg-c-brand transition-all
@@ -78,11 +78,11 @@ export const Toc: React.FC = () => {
           <Link
             key={index}
             id={getTocItemId(index)}
-            className={`block truncate text-sm leading-7 transition-colors
+            className={`block truncate text-sm leading-7 font-medium text-c-text-1 transition-opacity
               ${
                 index === activeIndex
-                  ? 'text-c-brand'
-                  : 'text-c-text-2 hover:text-c-text-1'
+                  ? 'opacity-100'
+                  : 'opacity-60 hover:opacity-100'
               }`}
             to={`#${item.id}`}
             color={false}
