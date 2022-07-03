@@ -25,9 +25,9 @@
   "files": [
     "bin",
     "dist",
+    "tailwind.config.cjs",
     "client.d.ts",
-    "theme.d.ts",
-    "shim.d.ts"
+    "theme.d.ts"
   ],
   "main": "dist/node/index.js",
   "types": "dist/node/index.d.ts",
