@@ -59,7 +59,12 @@ export interface UserConfig<ThemeConfig = any> {
    */
   useHashRouter?: boolean;
   /**
-   * Vite config
+   * Vite config.
+   *
+   * By default, we will use the vite config file like `vite.config.ts`
+   * (visit vite official document for more info).
+   *
+   * But if set vite config object here, we will ignore the vite config file.
    */
   vite?: ViteConfig;
   /**

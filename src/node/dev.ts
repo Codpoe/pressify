@@ -11,6 +11,8 @@ export async function createDevServer(
   const siteConfig = await resolveConfig(root, userConfig);
 
   return createViteServer({
+    // if user pass vite config object, we will ignore the vite config file
+    configFile: siteConfig.vite ? false : undefined,
     root,
     base: siteConfig.base,
     server: serverOptions,
