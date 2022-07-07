@@ -77,7 +77,8 @@ export default {
 
 ## vite
 
-通过 `vite` 修改 [Vite 的配置](https://vitejs.dev/config/)，例如：
+默认情况下，Pressify 会读取项目里的 vite 配置文件，如：`vite.config.ts`，具体读取规则参考 vite 官方文档。
+如果我们想自定义 Pressify 的 vite 配置，可以通过 `vite` 字段来修改 [Vite 的配置](https://vitejs.dev/config/)，例如：
 
 ```js
 export default {
@@ -88,6 +89,10 @@ export default {
   },
 };
 ```
+
+:::warning
+如果在这里自定义了 vite 配置，则不会再读取项目里的 **vite 配置文件**了。
+:::
 
 ## react
 
