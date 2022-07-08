@@ -18,7 +18,11 @@ const parser = Parser.extend(jsx());
 
 const moduleIdToCodeMap = new Map<
   string,
-  { code: string; language?: string }
+  {
+    importSource: string;
+    code: string;
+    language?: string;
+  }
 >();
 
 function checkIsDemo(meta: string) {
@@ -61,13 +65,15 @@ export const remarkMdxCodeDemo: Plugin = () => (tree: any, file) => {
     const prevCode = moduleIdToCodeMap.get(codeDemoModuleId);
     const hasChanged = Boolean(prevCode && prevCode.code !== node.value);
 
-    // if the code value has changed, append timestamp to refresh demo import
+    // if the code value has changed, append timestamp to refresh demo import.
+    // if not changed, use previous importSource
     const importSource = hasChanged
       ? `${codeDemoModuleId}?v=${Date.now()}`
-      : codeDemoModuleId;
+      : prevCode?.importSource || codeDemoModuleId;
 
     // store the code content for loading the component
     moduleIdToCodeMap.set(codeDemoModuleId, {
+      importSource,
       code: node.value,
       language: node.lang ?? undefined,
     });
