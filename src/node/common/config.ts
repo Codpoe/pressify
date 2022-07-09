@@ -93,6 +93,8 @@ async function resolveMdxOptions(
 ): Promise<MdxOptions> {
   return {
     ...mdxOptions,
+    mdxExtensions: ['.md', '.mdx'],
+    format: 'mdx',
     providerImportSource: '@mdx-js/react',
     remarkPlugins: (mdxOptions?.remarkPlugins || []).concat([
       remarkGfm,
