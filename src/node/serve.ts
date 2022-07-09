@@ -34,12 +34,18 @@ export async function serve(
     },
   });
 
-  polka()
-    .use(base.replace(/\/$/, ''), compress, serve)
-    .listen(port, (err: any) => {
-      if (err) {
-        throw err;
-      }
-      consola.log(`Built site served at http://localhost:${port}${base}\n`);
-    });
+  const app = polka();
+
+  if (base === '/') {
+    app.use(compress, serve);
+  } else {
+    app.use(base.replace(/\/$/, ''), compress, serve);
+  }
+
+  app.listen(port, (err: any) => {
+    if (err) {
+      throw err;
+    }
+    consola.log(`Built site served at http://localhost:${port}${base}\n`);
+  });
 }
