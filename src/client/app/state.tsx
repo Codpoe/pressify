@@ -5,17 +5,6 @@ import _routes from 'virtual:conventional-routes';
 import pagesData from 'virtual:conventional-pages-data';
 import { AppState } from './types';
 
-const theme = {
-  NotFound: () => <>404 Not Found</>,
-  ..._theme,
-};
-
-const routes = _routes.concat({
-  path: '*',
-  component: theme.NotFound,
-  element: <theme.NotFound />,
-});
-
 // pressify build will inject global variable: `__PRESSIFY_SSR_DATA__`
 export const ssrData =
   typeof window !== 'undefined' ? window.__PRESSIFY_SSR_DATA__ : undefined;
@@ -23,6 +12,17 @@ export const ssrData =
 export const appContext = createContext<AppState>(null as any);
 
 export function createAppState() {
+  const theme = {
+    NotFound: () => <>404 Not Found</>,
+    ..._theme,
+  };
+
+  const routes = _routes.concat({
+    path: '*',
+    component: theme.NotFound,
+    element: <theme.NotFound />,
+  });
+
   const appState = proxy<AppState>({
     theme: ref(theme),
     routes: ref(routes),

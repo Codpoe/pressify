@@ -155,6 +155,7 @@ export function createPressifyPlugin(
             '@docsearch/react/modal',
             'lodash-es/throttle',
           ],
+          exclude: ['pressify'],
         },
         server: {
           fs: {
