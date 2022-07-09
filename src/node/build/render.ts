@@ -82,17 +82,23 @@ export async function renderPages(
         };
 
         const html = clientHtml
-          .replace('<html>', `<html ${helmet.htmlAttributes.toString()}>`)
+          .replace(
+            '<html>',
+            `<html ${helmet?.htmlAttributes.toString() || ''}>`
+          )
           .replace(
             '</head>',
-            `${helmet.title.toString()}
-            ${helmet.meta.toString()}
+            `${helmet?.title.toString() || ''}
+            ${helmet?.meta.toString() || ''}
             ${preloadLinks}
-            ${helmet.link.toString()}
-            ${helmet.style.toString()}
+            ${helmet?.link.toString() || ''}
+            ${helmet?.style.toString() || ''}
           </head>`
           )
-          .replace('<body>', `<body ${helmet.bodyAttributes.toString()}>`)
+          .replace(
+            '<body>',
+            `<body ${helmet?.bodyAttributes.toString() || ''}>`
+          )
           .replace(
             '<div id="root"></div>',
             `<script>window.__PRESSIFY_SSR_DATA__ = ${JSON.stringify(

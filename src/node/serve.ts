@@ -15,12 +15,12 @@ export async function serve(
   options: ServeOptions = {},
   userConfig?: UserConfig
 ) {
-  const siteConfig = await resolveConfig(root, userConfig);
+  const { base, outDir } = await resolveConfig(root, userConfig);
   const port = await getPort({ port: options.port || 5000 });
 
   const compress = compression();
 
-  const serve = sirv(siteConfig.outDir, {
+  const serve = sirv(outDir, {
     etag: true,
     single: true,
     maxAge: 31536000,
@@ -35,11 +35,11 @@ export async function serve(
   });
 
   polka()
-    .use(compress, serve)
+    .use(base.replace(/\/$/, ''), compress, serve)
     .listen(port, (err: any) => {
       if (err) {
         throw err;
       }
-      consola.log(`Built site served at http://localhost:${port}/\n`);
+      consola.log(`Built site served at http://localhost:${port}${base}\n`);
     });
 }
