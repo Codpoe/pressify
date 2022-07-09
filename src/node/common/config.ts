@@ -18,6 +18,7 @@ import { getRemarkMdxDemo } from '../plugins/mdx/demo.js';
 import { remarkCallout } from '../plugins/mdx/callout.js';
 import { remarkMdxToc } from '../plugins/mdx/toc.js';
 import { getRehypeHighlight } from '../plugins/mdx/highlight.js';
+import { remarkImg } from '../plugins/mdx/img.js';
 import {
   UserConfig,
   SiteConfig,
@@ -87,6 +88,7 @@ export async function loadUserConfig(root: string): Promise<{
 
 async function resolveMdxOptions(
   root: string,
+  base: string,
   mdxOptions?: MdxOptions
 ): Promise<MdxOptions> {
   return {
@@ -97,6 +99,7 @@ async function resolveMdxOptions(
       remarkFrontmatter,
       [remarkMdxFrontmatter, { name: 'meta' }],
       remarkDirective,
+      [remarkImg, { base }],
       // CodeDemo needs to come before CodeMeta to preprocess the demo prop in the meta
       remarkMdxCodeDemo,
       // remarkMdxCodeMeta,
@@ -180,7 +183,8 @@ export async function resolveConfig(
     ({ userConfig, configPath } = await loadUserConfig(root));
   }
 
-  const base = userConfig.vite?.base || '/';
+  // with leading slash and trailing slash
+  const base = path.join('/', userConfig.vite?.base || '/', '/');
   const outDir = path.resolve(root, userConfig.vite?.build?.outDir || 'dist');
   const [themePath, useDefaultTheme] = resolveThemePath(root);
 
@@ -206,7 +210,7 @@ export async function resolveConfig(
       ...userConfig.themeConfig,
     },
     pages,
-    mdx: await resolveMdxOptions(root, userConfig.mdx),
+    mdx: await resolveMdxOptions(root, base, userConfig.mdx),
     tailwind: resolveTailwindConfig(
       root,
       pages,
@@ -221,10 +225,11 @@ export async function resolveConfig(
   };
 }
 
-const compareFields: string[] = [
+const compareFields: (keyof SiteConfig)[] = [
   'base',
-  'src',
-  'ignored',
+  'pages',
+  'ignore',
+  'useHashRouter',
   'vite',
   'react',
   'mdx',
