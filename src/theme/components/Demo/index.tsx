@@ -41,7 +41,7 @@ export const Demo: React.FC<DemoProps> = ({ code, codeHtml, children }) => {
 
   return (
     <div className="my-5 border border-c-border-1 rounded-md divide-y divide-c-border-1 overflow-hidden">
-      <div className="px-5 py-4">{children}</div>
+      <div className="px-5 py-4 not-prose">{children}</div>
       <div
         className="flex items-center px-2 h-8 cursor-pointer"
         onClick={handleActionBarClick}
