@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { useRoutes } from 'react-router-dom';
-import { useAppState } from './state';
+import { useAppState } from './hooks';
 
 export interface PageProps {
   fallback?: React.ReactNode;

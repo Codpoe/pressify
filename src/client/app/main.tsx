@@ -3,7 +3,7 @@ import { useLocation, matchRoutes } from 'react-router-dom';
 import { ref } from 'valtio';
 import { MDXProvider } from '@mdx-js/react';
 import { Route } from 'virtual:conventional-routes';
-import { appContext } from './state';
+import { appContext } from './hooks';
 import { AppState } from './types';
 
 const _useLayoutEffect =

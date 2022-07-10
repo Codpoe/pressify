@@ -1,5 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
+import { useSnapshot } from 'valtio';
 import importedThemeConfig from '/@pressify/theme-config';
+import { AppState } from './types';
+
+export const appContext = createContext<AppState>(null as any);
+
+/**
+ * get app state
+ */
+export function useAppState() {
+  const appState = useContext(appContext);
+  return useSnapshot(appState) as AppState;
+}
 
 /**
  * get theme config
