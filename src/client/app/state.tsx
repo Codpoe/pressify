@@ -1,15 +1,13 @@
-import { createContext, useContext } from 'react';
-import { proxy, ref, snapshot, subscribe, useSnapshot } from 'valtio';
+import { proxy, ref, snapshot, subscribe } from 'valtio';
 import _theme from '/@pressify/theme';
 import _routes from 'virtual:conventional-routes';
 import pagesData from 'virtual:conventional-pages-data';
+import { appContext } from './hooks';
 import { AppState } from './types';
 
 // pressify build will inject global variable: `__PRESSIFY_SSR_DATA__`
 export const ssrData =
   typeof window !== 'undefined' ? window.__PRESSIFY_SSR_DATA__ : undefined;
-
-export const appContext = createContext<AppState>(null as any);
 
 export function createAppState() {
   const theme = {
@@ -45,9 +43,4 @@ export function createAppState() {
   }
 
   return { appState, AppStateProvider };
-}
-
-export function useAppState() {
-  const appState = useContext(appContext);
-  return useSnapshot(appState) as AppState;
 }
