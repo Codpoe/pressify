@@ -122,8 +122,8 @@ export function createPressifyPlugin(
               replacement: require.resolve('@docsearch/react/modal'),
             },
             {
-              find: /^lodash-es\/throttle$/,
-              replacement: require.resolve('lodash-es/throttle'),
+              find: /^lodash-es$/,
+              replacement: require.resolve('lodash-es'),
             },
             {
               find: THEME_MODULE_ID,
@@ -153,7 +153,7 @@ export function createPressifyPlugin(
             '@docsearch/css',
             '@docsearch/react',
             '@docsearch/react/modal',
-            'lodash-es/throttle',
+            'lodash-es',
           ],
           exclude: ['pressify'],
         },
