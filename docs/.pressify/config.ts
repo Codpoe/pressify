@@ -11,12 +11,11 @@ export default defineConfig<ThemeConfig>({
     banner: 'This is early WIP!',
     docsRepo: 'codpoe/pressify',
     editLink: true,
-    // TODO
-    // algolia: {
-    //   apiKey: 'x',
-    //   appId: 'x',
-    //   indexName: 'x',
-    // },
+    algolia: {
+      appId: 'P8DCJAPIC4',
+      apiKey: '1983eee4fd011adb67085f1f5c4ed255',
+      indexName: 'pressify',
+    },
     themeConfigByPaths: {
       '/zh': {
         locale: 'zh',

@@ -72,7 +72,7 @@ export const Search: React.FC<{ iconOnly?: boolean }> = ({ iconOnly }) => {
         : userFacetFilters;
 
     return locales.length > 1 && currentLocale
-      ? [`language:${currentLocale.locale}`, ...userFacetFilters]
+      ? [`lang:${currentLocale.locale}`, ...userFacetFilters]
       : userFacetFilters;
   }, [locales, currentLocale, algolia]);
 
