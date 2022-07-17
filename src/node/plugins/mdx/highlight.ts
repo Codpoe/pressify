@@ -1,4 +1,4 @@
-import shiki, { Theme } from 'shiki';
+import shiki, { Theme, Lang } from 'shiki';
 import type { Plugin } from 'unified';
 import { visit, SKIP } from 'unist-util-visit';
 import { MdxOptions, ShikiThemeObj } from '../../common/types';
@@ -13,6 +13,10 @@ const themeTypeClassMap: Record<ThemeType, string> = {
 const themeStyleMap: Partial<Record<Theme, string>> = {
   'github-light': 'background-color:#f3f4f6',
   'github-dark': 'background-color:#2d333b',
+};
+
+const langToBundledLang: Record<string, Lang> = {
+  yml: 'yaml',
 };
 
 export interface Highlighter {
@@ -37,6 +41,7 @@ export async function getHighlighter(
     themeType?: 'light' | 'dark'
   ): string => {
     const _theme = typeof theme === 'string' ? theme : theme[themeType!];
+    lang = (lang && langToBundledLang[lang]) || lang;
 
     try {
       let html = highlighter.codeToHtml(code.trim(), lang, _theme);
@@ -61,7 +66,7 @@ export async function getHighlighter(
       if (
         lang !== 'text' &&
         err instanceof Error &&
-        err.message === 'No language registration for tree'
+        err.message?.startsWith('No language registration')
       ) {
         // fallback to 'text' for unregistered languages
         return highlight(code, 'text', themeType);
