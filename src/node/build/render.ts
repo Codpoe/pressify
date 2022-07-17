@@ -1,4 +1,4 @@
-import { createRequire } from 'module';
+import { pathToFileURL } from 'url';
 import path from 'upath';
 import fs from 'fs-extra';
 import ora from 'ora';
@@ -7,8 +7,6 @@ import { RollupOutput, OutputChunk } from 'rollup';
 import { FilledContext } from 'react-helmet-async';
 import { trapConsole } from '../common/utils.js';
 import { Page, SiteConfig } from '../common/types.js';
-
-const require = createRequire(import.meta.url);
 
 export async function renderPages(
   siteConfig: SiteConfig,
@@ -28,15 +26,9 @@ export async function renderPages(
     'utf-8'
   );
 
-  // const manifest = require(path.resolve(
-  //   siteConfig.outDir,
-  //   'ssr-manifest.json'
-  // ));
-
   // it is generated in building server bundle
-  const { render, pagesData } = require(path.resolve(
-    siteConfig.tempDir,
-    'entry.server.js'
+  const { render, pagesData } = (await import(
+    pathToFileURL(path.resolve(siteConfig.tempDir, 'entry.server.mjs')).href
   )) as {
     render: (pagePath: string, helmetContext: FilledContext) => string;
     pagesData: Record<string, Page>;

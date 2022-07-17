@@ -19,14 +19,8 @@ export async function bundle(
       base: siteConfig.base,
       plugins: createPressifyPlugin(siteConfig, ssr),
       logLevel: 'warn',
-      // @ts-ignore
       ssr: {
-        noExternal: [
-          'pressify',
-          /pressify-theme-/,
-          '@mdx-js/react',
-          'lodash-es',
-        ],
+        noExternal: [/react-router/, /valtio/],
       },
       build: {
         ...buildOptions,

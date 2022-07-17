@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useAppState } from 'pressify/client';
-import throttle from 'lodash-es/throttle';
+import { throttle, debounce } from 'lodash-es';
 import { useScroll } from '../../hooks/useScroll';
+import { useHash } from '../../hooks/useHash';
 import { Link } from '../Link';
 
 interface TocItem {
@@ -16,6 +17,7 @@ export const Toc: React.FC = () => {
   const [headings, setHeadings] = useState<HTMLElement[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const elRef = useRef<HTMLDivElement>(null);
+  const hash = useHash();
 
   // collect headings by toc
   useEffect(() => {
@@ -65,6 +67,19 @@ export const Toc: React.FC = () => {
   // scroll -> active
   useScroll(handleScroll);
 
+  // activeIndex -> update url hash
+  useEffect(() => {
+    debouncedUpdateUrlHash(headings[activeIndex]?.id);
+  }, [headings, activeIndex]);
+
+  // hash -> active heading scroll into view
+  useEffect(() => {
+    if (hash && headings.length) {
+      const heading = headings.find(({ id }) => id === hash);
+      heading?.scrollIntoView();
+    }
+  }, [hash, headings]);
+
   return (
     <div ref={elRef}>
       <div className="mb-2 text-xs text-c-text-0 font-bold">ON THIS PAGE</div>
@@ -95,6 +110,10 @@ export const Toc: React.FC = () => {
     </div>
   );
 };
+
+const debouncedUpdateUrlHash = debounce((id?: string) => {
+  window.history.replaceState(undefined, '', id ? `#${id}` : ' ');
+}, 400);
 
 function getTocItemId(index: number) {
   return `py-toc-item-${index}`;

@@ -22,7 +22,7 @@ export function useThemeConfig<T = any>(): T {
   useEffect(() => {
     if (import.meta.hot) {
       import.meta.hot.accept('/@pressify/theme-config', mod => {
-        setThemeConfig(mod.default);
+        mod && setThemeConfig(mod.default);
       });
     }
   }, []);

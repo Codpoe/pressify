@@ -5,5 +5,11 @@
   "hooks": {
     "before:init": "pnpm run lint",
     "after:bump": "pnpm run build"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
   }
 }

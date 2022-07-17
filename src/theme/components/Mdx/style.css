@@ -30,14 +30,14 @@
   opacity: 1;
 }
 
-.prose :where(pre code):not(:where([class~='not-prose'] *)) {
+.prose pre code:not([class~='not-prose'] *) {
   display: block;
   width: max-content;
   min-width: 100%;
   padding: 0.86em 1.14em;
 }
 
-.prose :where(h3 + .py-code-light + .py-code-dark):not(:where([class~="not-prose"] *)) {
+.prose h3 + .py-code-light + .py-code-dark:not([class~="not-prose"] *) {
   margin-top: 0;
 }
 

@@ -230,10 +230,19 @@ export default {
 
 ## algolia
 
-:::warning[WIP]
-:::
-
 配置 Algolia 的 [DocSearch](https://docsearch.algolia.com) 服务。
+
+```ts
+interface DocSearchProps {
+  appId: string;
+  apiKey: string;
+  indexName: string;
+}
+```
+
+:::tip
+这里只列了必传参数，其他参数请参考代码里的类型定义，或者查看 algolia 的官方文档。
+:::
 
 ## locale
 
