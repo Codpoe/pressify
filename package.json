@@ -1,6 +1,6 @@
 {
   "name": "pressify",
-  "version": "0.1.7",
+  "version": "1.0.0",
   "description": "Vite & React powered Static Site Generator",
   "keywords": [
     "vite",
