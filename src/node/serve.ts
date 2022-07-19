@@ -16,7 +16,7 @@ export async function serve(
   userConfig?: UserConfig
 ) {
   const { base, outDir } = await resolveConfig(root, userConfig);
-  const port = await getPort({ port: options.port || 5000 });
+  const port = await getPort({ port: options.port || 4173 });
 
   const compress = compression();
 
