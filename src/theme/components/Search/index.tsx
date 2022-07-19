@@ -57,8 +57,10 @@ export const Search: React.FC<{ iconOnly?: boolean }> = ({ iconOnly }) => {
   }, []);
 
   const navigator = useRef({
-    navigate({ suggestionUrl }: any) {
-      routerNavigate(suggestionUrl);
+    navigate({ item }: any) {
+      if (item?.url) {
+        routerNavigate(item.url);
+      }
     },
   }).current;
 

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useAppState } from 'pressify/client';
+import { useAppState, useLocation } from 'pressify/client';
 import { throttle, debounce } from 'lodash-es';
 import { useScroll } from '../../hooks/useScroll';
-import { useHash } from '../../hooks/useHash';
 import { Link } from '../Link';
 
 interface TocItem {
@@ -17,7 +16,6 @@ export const Toc: React.FC = () => {
   const [headings, setHeadings] = useState<HTMLElement[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const elRef = useRef<HTMLDivElement>(null);
-  const hash = useHash();
 
   // collect headings by toc
   useEffect(() => {
@@ -37,11 +35,7 @@ export const Toc: React.FC = () => {
           return;
         }
 
-        const scrollTop = Math.max(
-          window.pageYOffset,
-          document.documentElement.scrollTop,
-          document.body.scrollTop
-        );
+        const scrollTop = getScrollTop();
 
         if (scrollTop === 0) {
           setActiveIndex(-1);
@@ -73,12 +67,7 @@ export const Toc: React.FC = () => {
   }, [headings, activeIndex]);
 
   // hash -> active heading scroll into view
-  useEffect(() => {
-    if (hash && headings.length) {
-      const heading = headings.find(({ id }) => id === hash);
-      heading?.scrollIntoView();
-    }
-  }, [hash, headings]);
+  useHeadingScrollIntoView(headings);
 
   return (
     <div ref={elRef}>
@@ -113,8 +102,36 @@ export const Toc: React.FC = () => {
 
 const debouncedUpdateUrlHash = debounce((id?: string) => {
   window.history.replaceState(undefined, '', id ? `#${id}` : ' ');
-}, 400);
+}, 500);
+
+function getScrollTop() {
+  return Math.max(
+    window.pageYOffset,
+    document.documentElement.scrollTop,
+    document.body.scrollTop
+  );
+}
 
 function getTocItemId(index: number) {
   return `py-toc-item-${index}`;
+}
+
+let canScrollIntoView = false;
+
+function useHeadingScrollIntoView(headings: HTMLElement[]) {
+  const { hash } = useLocation();
+
+  // hash -> active heading scroll into view
+  useEffect(() => {
+    if (hash && headings.length) {
+      if (getScrollTop() === 0 || canScrollIntoView) {
+        const heading = headings.find(
+          ({ id }) => id === decodeURIComponent(hash.replace(/^#/, ''))
+        );
+        heading?.scrollIntoView();
+      }
+
+      canScrollIntoView = true;
+    }
+  }, [hash, headings]);
 }
