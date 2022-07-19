@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'url';
 import fs from 'fs-extra';
 import { cac } from 'cac';
 import consola from 'consola';
+import updateNotifier from 'update-notifier';
 import { createDevServer } from './dev.js';
 import { build } from './build/index.js';
 import { serve } from './serve.js';
@@ -57,3 +58,5 @@ cli
   });
 
 cli.parse();
+
+updateNotifier({ pkg: pkgJson }).notify();
