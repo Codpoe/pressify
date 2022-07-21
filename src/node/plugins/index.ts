@@ -18,12 +18,13 @@ import {
   DIST_THEME_DIR,
   THEME_MODULE_ID,
 } from '../common/constants.js';
-import { getGitRoot } from '../common/utils.js';
+import { createResolveExports, getGitRoot } from '../common/utils.js';
 import { SiteConfig } from '../common/types.js';
 import { createMdxPlugin } from './mdx/index.js';
 import { createThemePlugin } from './theme.js';
 
 const require = createRequire(import.meta.url);
+const resolveExports = createResolveExports(require);
 
 function resolveFsAllow(siteConfig: SiteConfig) {
   const workspaceRoot = searchForWorkspaceRoot(siteConfig.root);
@@ -63,67 +64,67 @@ export function createPressifyPlugin(
             // make sure it always use the same react dependency that comes with pressify itself
             {
               find: /^react$/,
-              replacement: require.resolve('react'),
+              replacement: resolveExports('react'),
             },
             {
               find: /^react\/jsx-dev-runtime$/,
-              replacement: require.resolve('react/jsx-dev-runtime'),
+              replacement: resolveExports('react/jsx-dev-runtime'),
             },
             {
               find: /^react\/jsx-runtime$/,
-              replacement: require.resolve('react/jsx-runtime'),
+              replacement: resolveExports('react/jsx-runtime'),
             },
             {
               find: /^react-dom$/,
-              replacement: require.resolve('react-dom'),
+              replacement: resolveExports('react-dom'),
             },
             {
               find: /^react-dom\/client$/,
-              replacement: require.resolve('react-dom/client'),
+              replacement: resolveExports('react-dom/client'),
             },
             {
               find: /^react-dom\/server$/,
-              replacement: require.resolve('react-dom/server'),
+              replacement: resolveExports('react-dom/server'),
             },
             {
               find: /^react-router-dom$/,
-              replacement: require.resolve('react-router-dom/index'),
+              replacement: resolveExports('react-router-dom/index'),
             },
             {
               find: /^react-helmet-async$/,
-              replacement: require.resolve('react-helmet-async'),
+              replacement: resolveExports('react-helmet-async'),
             },
             {
               find: /^react-transition-group$/,
-              replacement: require.resolve('react-transition-group'),
+              replacement: resolveExports('react-transition-group'),
             },
             {
               find: /^@mdx-js\/react$/,
-              replacement: require.resolve('@mdx-js/react'),
+              replacement: resolveExports('@mdx-js/react'),
             },
             {
               find: /^valtio$/,
-              replacement: require.resolve('valtio'),
+              replacement: resolveExports('valtio'),
             },
             {
               find: /^nprogress$/,
-              replacement: require.resolve('nprogress'),
+              replacement: resolveExports('nprogress'),
             },
             {
               find: /^@docsearch\/css$/,
-              replacement: require.resolve('@docsearch/css'),
+              replacement: resolveExports('@docsearch/css'),
             },
             {
               find: /^@docsearch\/react$/,
-              replacement: require.resolve('@docsearch/react'),
+              replacement: resolveExports('@docsearch/react'),
             },
             {
               find: /^@docsearch\/react\/modal$/,
-              replacement: require.resolve('@docsearch/react/modal'),
+              replacement: resolveExports('@docsearch/react/modal'),
             },
             {
               find: /^lodash-es$/,
-              replacement: require.resolve('lodash-es'),
+              replacement: resolveExports('lodash-es'),
             },
             {
               find: THEME_MODULE_ID,

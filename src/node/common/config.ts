@@ -1,7 +1,6 @@
 import { createRequire } from 'module';
 import path from 'upath';
 import fs from 'fs-extra';
-import { bundleRequire } from 'bundle-require';
 import { pick } from 'lodash-es';
 import remarkGfm from 'remark-gfm';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -30,13 +29,9 @@ import {
   DEFAULT_THEME_TAILWIND_CONFIG,
   POSSIBLE_CONFIG_FILES,
 } from './constants.js';
+import { requireModule } from './utils.js';
 
 const require = createRequire(import.meta.url);
-
-async function requireModule(filepath: string) {
-  const { mod } = await bundleRequire({ filepath });
-  return mod?.default ?? mod;
-}
 
 /**
  * Type helper to make it easier to create pressify config

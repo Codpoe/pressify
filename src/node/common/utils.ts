@@ -1,5 +1,4 @@
 import os from 'os';
-import { createRequire } from 'module';
 import path from 'upath';
 import fs from 'fs-extra';
 import { camelCase, upperFirst } from 'lodash-es';
@@ -15,8 +14,17 @@ export async function requireModule(filepath: string) {
   return mod?.default ?? mod;
 }
 
-export function requireResolve(request: string, path: string) {
-  return createRequire(path).resolve(request);
+export function createResolveExports(require: NodeRequire) {
+  return function resolveExports(
+    id: string,
+    options?: {
+      paths?: string[];
+    }
+  ) {
+    return path
+      .trimExt(require.resolve(id, options))
+      .replace(/[/\\]index$/, '');
+  };
 }
 
 export function pascalCase(str: string): string {
