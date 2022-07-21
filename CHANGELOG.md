@@ -1,5 +1,12 @@
 
 
+## [1.0.2](https://github.com/Codpoe/pressify/compare/1.0.1...1.0.2) (2022-07-21)
+
+
+### Bug Fixes
+
+* fix deps alias error ([0eb0ec2](https://github.com/Codpoe/pressify/commit/0eb0ec292b5496a0bb925dd3c80d570406bb3faa))
+
 ## [1.0.1](https://github.com/Codpoe/pressify/compare/1.0.0...1.0.1) (2022-07-21)
 
 
