@@ -1,5 +1,12 @@
 
 
+## [1.0.1](https://github.com/Codpoe/pressify/compare/1.0.0...1.0.1) (2022-07-21)
+
+
+### Bug Fixes
+
+* add some deps in ssr.noExternal to fix build error ([381a5c9](https://github.com/Codpoe/pressify/commit/381a5c9661563ea9e639df6d9c8e21d22710c620))
+
 # [1.0.0](https://github.com/Codpoe/pressify/compare/0.1.7...1.0.0) (2022-07-19)
 
 
