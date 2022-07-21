@@ -147,7 +147,7 @@
     "upath": "^2.0.1",
     "update-notifier": "^6.0.2",
     "valtio": "^1.6.1",
-    "vite": "^3.0.0",
+    "vite": "^3.0.2",
     "vite-plugin-conventional-entries": "^0.1.10-beta.8",
     "vite-plugin-conventional-routes": "^0.1.12-beta.9"
   }

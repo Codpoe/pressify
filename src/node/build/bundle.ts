@@ -20,7 +20,16 @@ export async function bundle(
       plugins: createPressifyPlugin(siteConfig, ssr),
       logLevel: 'warn',
       ssr: {
-        noExternal: [/react-router/, /valtio/],
+        noExternal: [
+          /react-router/,
+          /valtio/,
+          'use-sync-external-store',
+          'dom-helpers',
+          '@algolia/autocomplete-core',
+          '@algolia/autocomplete-shared',
+          'proxy-compare',
+          'algoliasearch',
+        ],
       },
       build: {
         ...buildOptions,
